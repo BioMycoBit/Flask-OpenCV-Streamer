@@ -18,8 +18,12 @@ class Streamer:
         self,
         port,
         requires_auth,
+        #
+        host,
+        #
         stream_res=(1280, 720),
         frame_rate=30,
+
         login_file="logins",
         login_key=".login",
     ):
@@ -33,6 +37,9 @@ class Streamer:
         self.thread = None
         self.is_streaming = False
         self.port = port
+        #
+        self.host = host
+        #
         self.req_auth = requires_auth
         self.stream_res = stream_res
         self.frame_rate = frame_rate
@@ -136,11 +143,26 @@ class Streamer:
             daemon=True,
             target=self.flask.run,
             kwargs={
-                "host": "0.0.0.0",
+                "host": self.host,
                 "port": self.port,
                 "debug": False,
                 "threaded": True,
             },
+
+            # kwargs={
+            #     "host": "127.0.0.1",
+            #     "port": self.port,
+            #     "debug": False,
+            #     "threaded": True,
+            # },
+
+            # kwargs={
+            #     "host": "0.0.0.0",
+            #     "port": self.port,
+            #     "debug": False,
+            #     "threaded": True,
+            # },
+
         )
         self.thread.start()
         self.is_streaming = True
